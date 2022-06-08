@@ -13,7 +13,7 @@ import br.ce.wcaquino.entidades.Usuario;
 
 public class LocacaoService {
 
-	public Locacao alugarFilme(Usuario usuario,List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
+	public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
 
 		if (usuario == null) {
 			throw new LocadoraException("Usuario vazio!");
@@ -22,35 +22,39 @@ public class LocacaoService {
 		if (filmes == null || filmes.isEmpty()) {
 			throw new LocadoraException("Filme vazio!");
 		}
-		
-		for(Filme filme: filmes) {
+
+		for (Filme filme : filmes) {
 			if (filme.getEstoque() == 0) {
 				throw new FilmeSemEstoqueException();
 			}
-		}	
+		}
 
 		Locacao locacao = new Locacao();
 		locacao.setFilmes(filmes);
 		locacao.setUsuario(usuario);
 		locacao.setDataLocacao(new Date());
 		Double valorTotal = 0d;
-		for(int i=0; i< filmes.size(); i++) {
+		for (int i = 0; i < filmes.size(); i++) {
 			Filme filme = filmes.get(i);
 			Double valorFilme = filme.getPrecoLocacao();
-			if(i == 2) {
-			valorFilme = valorFilme * 0.75;	
-			} else if (i==3) {
+			switch (i) {
+			case 2:
+				valorFilme = valorFilme * 0.75;
+				break;
+			case 3:
 				valorFilme = valorFilme * 0.50;
-			}else if(i==4) {
+				break;
+			case 4:
 				valorFilme = valorFilme * 0.25;
-			}
-			else if(i==5) {
-				valorFilme = 0.0;
+				break;
+			case 5:
+				valorFilme = 0d;
+				break;
+
 			}
 			valorTotal += valorFilme;
+			locacao.setValor(valorTotal);
 		}
-		locacao.setValor(valorTotal);
-
 		// Entrega no dia seguinte
 		Date dataEntrega = new Date();
 		dataEntrega = adicionarDias(dataEntrega, 1);
