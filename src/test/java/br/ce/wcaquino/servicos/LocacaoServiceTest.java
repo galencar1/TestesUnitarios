@@ -1,5 +1,7 @@
 package br.ce.wcaquino.servicos;
 
+import static org.junit.Assert.assertThat;
+
 import java.util.Date;
 
 import org.hamcrest.CoreMatchers;
@@ -60,6 +62,7 @@ public class LocacaoServiceTest {
 	}
 
 	// Teste Usuario Vazio utilizando forma robusta
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 		// cenario
@@ -71,7 +74,7 @@ public class LocacaoServiceTest {
 			service.alugarFilme(null, filme);
 			Assert.fail();
 		} catch (LocadoraException e) {
-			Assert.assertThat(e.getMessage(), CoreMatchers.is("Usuario vazio!"));
+			assertThat(e.getMessage(), CoreMatchers.is("Usuario vazio!"));
 		}
 	}
 
