@@ -2,7 +2,9 @@ package br.ce.wcaquino.servicos;
 
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -43,10 +45,10 @@ public class LocacaoServiceTest {
 		// Criando teste unitario
 		// Cenario
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 2, 5.0);
+		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
 
 		// Ação
-		Locacao locacao = service.alugarFilme(usuario, filme);
+		Locacao locacao = service.alugarFilme(usuario, filmes);
 
 		// Verificação
 		error.checkThat(locacao.getValor(), CoreMatchers.is(5.0));
@@ -60,10 +62,10 @@ public class LocacaoServiceTest {
 	public void testeLocacao_FilmeSemEstoque() throws Exception {
 		// Cenario
 		Usuario usuario = new Usuario("Usuario 1");
-		Filme filme = new Filme("Filme 1", 0, 5.0);
+		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 0, 4.0));
 
 		// Ação
-		service.alugarFilme(usuario, filme);
+		service.alugarFilme(usuario, filmes);
 	}
 /*************************************************************************************************************/
 	// Teste Usuario Vazio utilizando forma robusta
@@ -71,11 +73,11 @@ public class LocacaoServiceTest {
 	@Test
 	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 		// cenario
-		Filme filme = new Filme("Filme 2", 1, 5.0);
+		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
 
 		// ação
 		try {
-			service.alugarFilme(null, filme);
+			service.alugarFilme(null, filmes);
 			Assert.fail();
 		} catch (LocadoraException e) {
 			assertThat(e.getMessage(), CoreMatchers.is("Usuario vazio!"));
