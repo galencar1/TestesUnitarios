@@ -9,7 +9,7 @@ import br.ce.waquino.exceptions.NaoPodeDividirPorZeroException;
 public class CalculadoraTest {
 	
 	private Calculadora calc;
-	
+/*************************************************************************************************************/	
 	@Before
 	public void setup() {
 		calc = new Calculadora();

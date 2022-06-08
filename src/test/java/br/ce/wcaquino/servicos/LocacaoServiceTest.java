@@ -40,7 +40,7 @@ public class LocacaoServiceTest {
 	}
 /*************************************************************************************************************/
 	@Test
-	public void testeLocacao() throws Exception {
+	public void deveAlugarFilme() throws Exception {
 
 		// Criando teste unitario
 		// Cenario
@@ -59,7 +59,7 @@ public class LocacaoServiceTest {
 /*************************************************************************************************************/
 	// Teste filme sem estoque utilizando a forma elegante
 	@Test(expected = FilmeSemEstoqueException.class)
-	public void testeLocacao_FilmeSemEstoque() throws Exception {
+	public void naoDeveAlugarFilmeSemEstoque() throws Exception {
 		// Cenario
 		Usuario usuario = new Usuario("Usuario 1");
 		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 0, 4.0));
@@ -71,7 +71,7 @@ public class LocacaoServiceTest {
 	// Teste Usuario Vazio utilizando forma robusta
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
+	public void naoDeveAlugarFilmeSemUsuario() throws FilmeSemEstoqueException {
 		// cenario
 		List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 2, 5.0));
 
@@ -86,7 +86,7 @@ public class LocacaoServiceTest {
 /*************************************************************************************************************/
 	// Teste Filme vazio utilizando a forma nova
 	@Test
-	public void testLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException {
+	public void naoDeveAlugarFilmeSemFilme() throws FilmeSemEstoqueException, LocadoraException {
 		// Cenario
 		Usuario usuario = new Usuario("Usuario 1");
 
@@ -95,5 +95,85 @@ public class LocacaoServiceTest {
 
 		// acao
 		service.alugarFilme(usuario, null);
+	}
+/**************************************************************************************************************/
+	@SuppressWarnings("deprecation")
+	// Teste desconto no aluguel do terceiro filme (25%)
+	@Test
+	public void devePagar75PctNoFilme3() throws FilmeSemEstoqueException, LocadoraException {
+		//Cenario
+			Usuario usuario = new Usuario("Usuario 1");
+			List<Filme>filmes = Arrays.asList(
+					new Filme("Filme 1", 2, 4.0),
+					new Filme("Filme 2 ", 2, 4.0),
+					new Filme("Filme 3", 2, 4.0));
+		//Acao
+			Locacao resultado =  service.alugarFilme(usuario, filmes);
+		
+		//Verificacao
+		//4+4+3 = 11
+			assertThat(resultado.getValor(), CoreMatchers.is(11.0));
+			
+		
+	}
+/**************************************************************************************************************/
+	@SuppressWarnings("deprecation")
+	// Teste desconto no aluguel do quarto filme(50%)
+	@Test
+	public void devePagar50PctNoFilme4() throws FilmeSemEstoqueException, LocadoraException {
+		//Cenario
+			Usuario usuario = new Usuario("Usuario 1");
+			List<Filme>filmes = Arrays.asList(
+					new Filme("Filme 1", 2, 4.0),
+					new Filme("Filme 2 ", 2, 4.0),
+					new Filme("Filme 3", 2, 4.0),
+					new Filme("Filme 4", 2, 4.0));
+		//Acao
+			Locacao resultado =  service.alugarFilme(usuario, filmes);
+		
+		//Verificacao
+		//4+4+3+2 = 13
+			assertThat(resultado.getValor(), CoreMatchers.is(13.0));	
+	}
+/**************************************************************************************************************/
+	@SuppressWarnings("deprecation")
+	// Teste desconto no aluguel do quinto filme(75%)
+	@Test
+	public void devePagar25PctNoFilme5() throws FilmeSemEstoqueException, LocadoraException {
+		//Cenario
+			Usuario usuario = new Usuario("Usuario 1");
+			List<Filme>filmes = Arrays.asList(
+					new Filme("Filme 1", 2, 4.0),
+					new Filme("Filme 2 ", 2, 4.0),
+					new Filme("Filme 3", 2, 4.0),
+					new Filme("Filme 4", 2, 4.0),
+					new Filme("Filme 5", 2, 4.0));
+		//Acao
+			Locacao resultado =  service.alugarFilme(usuario, filmes);
+		
+		//Verificacao
+		//4+4+3+2+1 = 14
+			assertThat(resultado.getValor(), CoreMatchers.is(14.0));	
+	}
+	/**************************************************************************************************************/
+	@SuppressWarnings("deprecation")
+	// Teste desconto no aluguel do sexto filme(100%)
+	@Test
+	public void devePagar0PctNoFilme6() throws FilmeSemEstoqueException, LocadoraException {
+		//Cenario
+			Usuario usuario = new Usuario("Usuario 1");
+			List<Filme>filmes = Arrays.asList(
+					new Filme("Filme 1", 2, 4.0),
+					new Filme("Filme 2 ", 2, 4.0),
+					new Filme("Filme 3", 2, 4.0),
+					new Filme("Filme 4", 2, 4.0),
+					new Filme("Filme 5", 2, 4.0),
+					new Filme("Filme 6", 2, 4.0));
+		//Acao
+			Locacao resultado =  service.alugarFilme(usuario, filmes);
+		
+		//Verificacao
+		//4+4+3+2+1+0 = 14
+			assertThat(resultado.getValor(), CoreMatchers.is(14.0));	
 	}
 }
