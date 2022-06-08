@@ -1,5 +1,7 @@
 package br.ce.wcaquino.servicos;
 
+import static br.ce.wcaquino.matchers.MatchersProprios.caiEm;
+import static br.ce.wcaquino.matchers.MatchersProprios.caiNumaSegunda;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
@@ -8,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -21,6 +24,8 @@ import br.ce.waquino.exceptions.LocadoraException;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
+import br.ce.wcaquino.matchers.DiaSemanaMatcher;
+import br.ce.wcaquino.matchers.MatchersProprios;
 import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
@@ -179,6 +184,7 @@ public class LocacaoServiceTest {
 			assertThat(resultado.getValor(), CoreMatchers.is(14.0));	
 	}
 /***************************************************************************************************************/
+	@SuppressWarnings("deprecation")
 	@Test
 	public void deveDevolverNaSegundaAoAlugarNoSabado() throws FilmeSemEstoqueException, LocadoraException {
 		Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
@@ -189,7 +195,10 @@ public class LocacaoServiceTest {
 		//acao
 		Locacao retorno = service.alugarFilme(usuario, filmes); 
 		//verificacao
-		boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
-		Assert.assertTrue(ehSegunda);
+//		boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
+//		Assert.assertTrue(ehSegunda);
+//		assertThat(retorno.getDataRetorno(), new DiaSemanaMatcher(Calendar.MONDAY));
+//		assertThat(retorno.getDataRetorno(), caiEm(Calendar.SUNDAY));
+		assertThat(retorno.getDataRetorno(), caiNumaSegunda());
  	}
 }
