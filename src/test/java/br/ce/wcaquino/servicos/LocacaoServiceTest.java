@@ -5,11 +5,8 @@ import static org.junit.Assert.assertThat;
 import java.util.Date;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -23,36 +20,31 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
-	
+
 	private LocacaoService service;
-	
-	
-	
-	
+/************************************************************************************************************/
 	// Utilizando Rules
 	@Rule
 	// Error's Collector's
 	public ErrorCollector error = new ErrorCollector();
-
+/*************************************************************************************************************/
 	@SuppressWarnings("deprecation")
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
-	
+/*************************************************************************************************************/
 	@Before
 	public void setup() {
 		service = new LocacaoService();
 	}
-	
-
+/*************************************************************************************************************/
 	@Test
 	public void testeLocacao() throws Exception {
 
 		// Criando teste unitario
-
 		// Cenario
 		Usuario usuario = new Usuario("Usuario 1");
 		Filme filme = new Filme("Filme 1", 2, 5.0);
-		
+
 		// Ação
 		Locacao locacao = service.alugarFilme(usuario, filme);
 
@@ -62,7 +54,7 @@ public class LocacaoServiceTest {
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)),
 				CoreMatchers.is(true));
 	}
-
+/*************************************************************************************************************/
 	// Teste filme sem estoque utilizando a forma elegante
 	@Test(expected = FilmeSemEstoqueException.class)
 	public void testeLocacao_FilmeSemEstoque() throws Exception {
@@ -73,7 +65,7 @@ public class LocacaoServiceTest {
 		// Ação
 		service.alugarFilme(usuario, filme);
 	}
-
+/*************************************************************************************************************/
 	// Teste Usuario Vazio utilizando forma robusta
 	@SuppressWarnings("deprecation")
 	@Test
@@ -89,17 +81,17 @@ public class LocacaoServiceTest {
 			assertThat(e.getMessage(), CoreMatchers.is("Usuario vazio!"));
 		}
 	}
-
+/*************************************************************************************************************/
 	// Teste Filme vazio utilizando a forma nova
 	@Test
 	public void testLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException {
 		// Cenario
 		Usuario usuario = new Usuario("Usuario 1");
-		
+
 		exception.expect(LocadoraException.class);
 		exception.expectMessage("Filme vazio!");
-		
-		//acao
+
+		// acao
 		service.alugarFilme(usuario, null);
 	}
 }
