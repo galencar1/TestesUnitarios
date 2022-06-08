@@ -26,6 +26,9 @@ public class LocacaoServiceTest {
 	
 	private LocacaoService service;
 	
+	
+	
+	
 	// Utilizando Rules
 	@Rule
 	// Error's Collector's
@@ -37,24 +40,9 @@ public class LocacaoServiceTest {
 	
 	@Before
 	public void setup() {
-		System.out.println("Before");
 		service = new LocacaoService();
 	}
 	
-	@After
-	public void tearDown() {
-		System.out.println("After");
-	}
-
-	@BeforeClass
-	public static void setupClass() {
-		System.out.println("Before Class");
-	}
-	
-	@AfterClass
-	public static void tearDownClass() {
-		System.out.println("After Class");
-	}
 
 	@Test
 	public void testeLocacao() throws Exception {
@@ -64,8 +52,6 @@ public class LocacaoServiceTest {
 		// Cenario
 		Usuario usuario = new Usuario("Usuario 1");
 		Filme filme = new Filme("Filme 1", 2, 5.0);
-		
-		System.out.println("Teste!");
 		
 		// Ação
 		Locacao locacao = service.alugarFilme(usuario, filme);
