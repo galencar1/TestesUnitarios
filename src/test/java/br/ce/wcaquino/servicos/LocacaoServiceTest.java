@@ -5,7 +5,9 @@ import static org.junit.Assert.assertThat;
 import java.util.Date;
 
 import org.hamcrest.CoreMatchers;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -19,7 +21,9 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
-
+	
+	private LocacaoService service;
+	
 	// Utilizando Rules
 	@Rule
 	// Error's Collector's
@@ -28,6 +32,17 @@ public class LocacaoServiceTest {
 	@SuppressWarnings("deprecation")
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
+	
+	@Before
+	public void setup() {
+		System.out.println("Before");
+		service = new LocacaoService();
+	}
+	
+	@After
+	public void tearDown() {
+		System.out.println("After");
+	}
 
 	@Test
 	public void testeLocacao() throws Exception {
@@ -35,10 +50,11 @@ public class LocacaoServiceTest {
 		// Criando teste unitario
 
 		// Cenario
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
 		Filme filme = new Filme("Filme 1", 2, 5.0);
-
+		
+		System.out.println("Teste!");
+		
 		// Ação
 		Locacao locacao = service.alugarFilme(usuario, filme);
 
@@ -53,7 +69,6 @@ public class LocacaoServiceTest {
 	@Test(expected = FilmeSemEstoqueException.class)
 	public void testeLocacao_FilmeSemEstoque() throws Exception {
 		// Cenario
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
 		Filme filme = new Filme("Filme 1", 0, 5.0);
 
@@ -66,7 +81,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 		// cenario
-		LocacaoService service = new LocacaoService();
 		Filme filme = new Filme("Filme 2", 1, 5.0);
 
 		// ação
@@ -82,7 +96,6 @@ public class LocacaoServiceTest {
 	@Test
 	public void testLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException {
 		// Cenario
-		LocacaoService service = new LocacaoService();
 		Usuario usuario = new Usuario("Usuario 1");
 		
 		exception.expect(LocadoraException.class);
