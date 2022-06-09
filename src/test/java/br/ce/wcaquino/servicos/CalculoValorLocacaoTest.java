@@ -27,6 +27,8 @@ import br.ce.wcaquino.entidades.Usuario;
 public class CalculoValorLocacaoTest {
 
 	private LocacaoService service = new LocacaoService();
+	private LocacaoDAO dao;
+	private SPCService spc;
 	
 	@Parameter
 	public List<Filme> filmes;
@@ -38,8 +40,10 @@ public class CalculoValorLocacaoTest {
 	@Before
 	public void setup() {
 		service = new LocacaoService();
-		LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
+		dao = Mockito.mock(LocacaoDAO.class);
 		service.setLocacaoDAO(dao);
+		spc = Mockito.mock(SPCService.class);
+		service.setSPCService(spc);
 	}
 
 	private static Filme filme1 = FilmeBuilder.umFilme().agora();
