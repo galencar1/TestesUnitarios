@@ -1,7 +1,8 @@
 package br.ce.wcaquino.servicos;
 
-import static br.ce.wcaquino.matchers.MatchersProprios.caiEm;
 import static br.ce.wcaquino.matchers.MatchersProprios.caiNumaSegunda;
+import static br.ce.wcaquino.matchers.MatchersProprios.ehHoje;
+import static br.ce.wcaquino.matchers.MatchersProprios.ehHojeComDiferencaDeDias;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
@@ -10,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
@@ -24,13 +24,12 @@ import br.ce.waquino.exceptions.LocadoraException;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
-import br.ce.wcaquino.matchers.DiaSemanaMatcher;
-import br.ce.wcaquino.matchers.MatchersProprios;
 import br.ce.wcaquino.utils.DataUtils;
 
 public class LocacaoServiceTest {
 
 	private LocacaoService service;
+	
 /************************************************************************************************************/
 	// Utilizando Rules
 	@Rule
@@ -60,8 +59,10 @@ public class LocacaoServiceTest {
 		// Verificação
 		error.checkThat(locacao.getValor(), CoreMatchers.is(5.0));
 		error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), CoreMatchers.is(true));
-		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)),
-				CoreMatchers.is(true));
+		error.checkThat(locacao.getDataLocacao(), ehHoje());
+//		error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)),
+//				CoreMatchers.is(true));
+		error.checkThat(locacao.getDataRetorno(), ehHojeComDiferencaDeDias(1));
 	}
 /*************************************************************************************************************/
 	// Teste filme sem estoque utilizando a forma elegante
