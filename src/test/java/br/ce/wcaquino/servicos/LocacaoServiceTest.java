@@ -5,6 +5,7 @@ import static br.ce.wcaquino.matchers.MatchersProprios.caiNumaSegunda;
 import static br.ce.wcaquino.matchers.MatchersProprios.ehHoje;
 import static br.ce.wcaquino.matchers.MatchersProprios.ehHojeComDiferencaDeDias;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.never;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -169,14 +170,20 @@ public class LocacaoServiceTest {
 	public void deveEnviarEmailParaLocacoesAtrasadas() {
 		//cenario
 		Usuario usuario = UsuarioBuilder.umUsuario().agora();
+		//Usuario usuario2 = UsuarioBuilder.umUsuario().agora();
+		//Usuario usuario3 = UsuarioBuilder.umUsuario().agora();
 		
-		List<Locacao> locacoes = Arrays.asList(LocacaoBuilder.umLocacao().comUsuario(usuario)
-				.comDataRetorno(DataUtils.obterDataComDiferencaDias(-2)).agora());
+		List<Locacao> locacoes = Arrays.asList(LocacaoBuilder.umLocacao().atrasada().comUsuario(usuario).agora());
+				//LocacaoBuilder.umLocacao().atrasada().comUsuario(usuario3).agora());
+				//LocacaoBuilder.umLocacao().comUsuario(usuario2).agora());
 		
 		Mockito.when(dao.obterLocacoesPendentes()).thenReturn(locacoes); 
 		//acao 
 		service.notificarAtrasos();
 		//verificacao
 		Mockito.verify(email).notificarAtraso(usuario);
+		//Mockito.verify(email).notificarAtraso(usuario3);
+		//Mockito.verify(email).notificarAtraso(usuario2);
+		//Mockito.verifyNoMoreInteractions(email);
 	}
 }
